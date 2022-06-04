@@ -21,21 +21,16 @@ namespace BCIT
             }
         }
 
-        public delegate void OnMouseDown(float x, float y);
+        public delegate void OnMouseAction(float x, float y);
 
-        public event OnMouseDown OnLeftButtonDown;
-        public event OnMouseDown OnMiddleButtonDown;
-        public event OnMouseDown OnRightButtonDown;
+        public event OnMouseAction OnLeftButton;
+        public event OnMouseAction OnMiddleButton;
+        public event OnMouseAction OnRightButton;
+        public event OnMouseAction OnLeftButtonClick;
 
         private void Awake()
         {
             _instance = this;
-        }
-
-        // Start is called before the first frame update
-        void Start()
-        {
-
         }
 
         // Update is called once per frame
@@ -43,18 +38,30 @@ namespace BCIT
         {
             if (Input.GetMouseButton(0))
             {
-                OnLeftButtonDown?.Invoke(Input.GetAxis("Mouse X"), Input.GetAxis("Mouse Y"));
+                OnLeftButton?.Invoke(Input.GetAxis("Mouse X"), Input.GetAxis("Mouse Y"));
             }
 
             if (Input.GetMouseButton(1))
             {
-                OnRightButtonDown?.Invoke(Input.GetAxis("Mouse X"), Input.GetAxis("Mouse Y"));
+                OnRightButton?.Invoke(Input.GetAxis("Mouse X"), Input.GetAxis("Mouse Y"));
             }
 
             if (Input.GetMouseButton(2))
             {
-                OnMiddleButtonDown?.Invoke(Input.GetAxis("Mouse X"), Input.GetAxis("Mouse Y"));
+                OnMiddleButton?.Invoke(Input.GetAxis("Mouse X"), Input.GetAxis("Mouse Y"));
             }
+            
+            if (Input.GetMouseButtonDown(0))
+            {
+                OnLeftButtonClick?.Invoke(Input.GetAxis("Mouse X"), Input.GetAxis("Mouse Y"));
+            }
+        }
+
+        private void OnDestroy()
+        {
+            OnLeftButton = null;
+            OnRightButton = null;
+            OnMiddleButton = null;
         }
     }
 }
