@@ -4,34 +4,14 @@ using UnityEngine;
 
 namespace BCIT
 {
-    public class InputManager : MonoBehaviour
+    public class InputManager : Singleton<InputManager>
     {
-        private static InputManager _instance;
-
-        public static InputManager Instance
-        {
-            get
-            {
-                if (_instance == null)
-                {
-                    Debug.LogError("InputManager _instance null");
-                }
-
-                return _instance;
-            }
-        }
-
         public delegate void OnMouseAction(float x, float y);
 
         public event OnMouseAction OnLeftButton;
         public event OnMouseAction OnMiddleButton;
         public event OnMouseAction OnRightButton;
         public event OnMouseAction OnLeftButtonClick;
-
-        private void Awake()
-        {
-            _instance = this;
-        }
 
         // Update is called once per frame
         void Update()

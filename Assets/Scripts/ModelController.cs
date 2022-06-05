@@ -38,6 +38,7 @@ namespace BCIT
                     curHoverGameObject = null;
                 }
                 modelView.OnHover(curHoverGameObject);
+                UIManager.Instance.ShowTip(curHoverGameObject);
             }
         }
         
