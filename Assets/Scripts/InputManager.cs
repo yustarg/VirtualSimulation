@@ -62,6 +62,7 @@ namespace BCIT
             OnLeftButton = null;
             OnRightButton = null;
             OnMiddleButton = null;
+            OnLeftButtonClick = null;
         }
     }
 }

@@ -6,10 +6,11 @@ namespace BCIT
     {
         private readonly float rotateSpeeed = 5f;
         private readonly float moveSpeeed = 1f;
+        private readonly float moveSingleSpeeed = 0.5f;
 
         private Camera mainCam;
         private ModelView modelView;
-        private GameObject curSelectionGameObject;
+        private GameObject curHoverGameObject;
         
         // Start is called before the first frame update
         void OnEnable()
@@ -25,17 +26,26 @@ namespace BCIT
         // Update is called once per frame
         void Update()
         {
-            if (mainCam != null)
+            if (mainCam != null && modelView != null)
             {
-                Ray ray = mainCam.ScreenPointToRay(Input.mousePosition);
+                var ray = mainCam.ScreenPointToRay(Input.mousePosition);
                 if (Physics.Raycast(ray, out var hitInfo))
                 {
-                    modelView.OnHover(hitInfo.transform.gameObject, true);
+                    curHoverGameObject = hitInfo.transform.gameObject;
                 }
                 else
                 {
-                    modelView.OnHover(null, false);
+                    curHoverGameObject = null;
                 }
+                modelView.OnHover(curHoverGameObject);
+            }
+        }
+        
+        private void Select(float x, float y)
+        {
+            if (curHoverGameObject != null)
+            {
+                modelView.OnSelect(curHoverGameObject);
             }
         }
         
@@ -51,12 +61,11 @@ namespace BCIT
 
         private void MoveSinglePart(float x, float y)
         {
-            
-        }
-        
-        private void Select(float x, float y)
-        {
-            
+            var t = modelView.GetSelectedTransform();
+            if (t != null)
+            {
+                t.Translate(new Vector3(x, y, 0) * moveSingleSpeeed, Space.World);
+            }
         }
 
         private void Initialize()
