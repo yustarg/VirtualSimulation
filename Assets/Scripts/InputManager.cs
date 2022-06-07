@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 namespace BCIT
 {
@@ -16,6 +17,11 @@ namespace BCIT
         // Update is called once per frame
         void Update()
         {
+            if (EventSystem.current.IsPointerOverGameObject())
+            {
+                return;
+            }
+            
             if (Input.GetMouseButton(0))
             {
                 OnLeftButton?.Invoke(Input.GetAxis("Mouse X"), Input.GetAxis("Mouse Y"));

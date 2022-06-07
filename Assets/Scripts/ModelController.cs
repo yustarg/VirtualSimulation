@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 namespace BCIT
 {
@@ -26,6 +27,11 @@ namespace BCIT
         // Update is called once per frame
         void Update()
         {
+            if (EventSystem.current.IsPointerOverGameObject())
+            {
+                return;
+            }
+
             if (mainCam != null && modelView != null)
             {
                 var ray = mainCam.ScreenPointToRay(Input.mousePosition);
