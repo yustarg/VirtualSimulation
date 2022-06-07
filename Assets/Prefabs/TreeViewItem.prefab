@@ -35,8 +35,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 75.00018, y: -1.1875687}
-  m_SizeDelta: {x: 328, y: 40}
+  m_AnchoredPosition: {x: 209.88, y: -1.1875687}
+  m_SizeDelta: {x: 597.75, y: 40}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &3587568598412287992
 CanvasRenderer:
@@ -198,10 +198,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c7068f88eaca438c9685d5f086aaff65, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mUseOverridedConfig: 0
-  mOverridedChildTreeItemPadding: 0
-  mOverridedChildTreeIndent: 0
-  mOverridedChildTreeListPadding: 0
 --- !u!1 &3662805484413638478
 GameObject:
   m_ObjectHideFlags: 0

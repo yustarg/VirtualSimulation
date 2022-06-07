@@ -106,6 +106,8 @@ namespace BCIT
                 }
                 st.IsSelected = true;
                 curSelectedItemId = item.ItemId;
+                
+                modelView.OnSelect(item.name);
             }
         }
 
@@ -113,12 +115,22 @@ namespace BCIT
         {
             if (go != null)
             {
+                //TODO refactor here
                 var pos = go.transform.TransformPoint(go.GetComponent<MeshFilter>().mesh.bounds.max);
                 panelTip.Show(go.name, canvas.WorldToCanvasPosition(new Vector3(pos.x, pos.y / 2, pos.z)));
             }
             else
             {
                 panelTip.Hide();
+            }
+        }
+
+        public void OnModelPartSelect(GameObject go)
+        {
+            var item = treeView.GetTreeItemByName(go.name);
+            if (item != null)
+            {
+                OnItemCustomEvent(item, CustomEvent.ItemClicked, null);
             }
         }
 
@@ -136,12 +148,12 @@ namespace BCIT
 
         private void OnBtnXRayClick()
         {
-            
+            //TODO XRay mode
         }
 
         private void OnBtnTransparentClick()
         {
-
+            //TODO Transparent mode
         }
     
         private void ShowTreeView(bool isShow)

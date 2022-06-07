@@ -53,6 +53,7 @@ namespace BCIT
             if (curHoverGameObject != null)
             {
                 modelView.OnSelect(curHoverGameObject);
+                UIManager.Instance.OnModelPartSelect(curHoverGameObject);
             }
         }
         

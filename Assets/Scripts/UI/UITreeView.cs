@@ -92,6 +92,18 @@ namespace BCIT
             }
             return null;
         }
+        
+        public UITreeViewItem GetTreeItemByName(string name)
+        {
+            foreach (var kv in treeViewItemDict)
+            {
+                if (kv.Value.name.Equals(name))
+                {
+                    return kv.Value;
+                }
+            }
+            return null;
+        }
 
         public UITreeViewItem NewTreeItem()
         {

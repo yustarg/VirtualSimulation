@@ -10,6 +10,18 @@ namespace BCIT
         private GameObject curSelectGameObject;
         private GameObject prevHoveredGameObject;
         private Material prevHoveredMat;
+        private Dictionary<string, Transform> nodeMap = new Dictionary<string, Transform>();
+
+        void Awake()
+        {
+            var root = GetRootTransform();
+            var allNodes = root.GetComponentsInChildren<Transform>();
+            // each node should hava a unique name
+            foreach (var t in allNodes)
+            {
+                nodeMap.Add(t.name, t);
+            }
+        }
 
         public Transform GetRootTransform()
         {
@@ -41,6 +53,8 @@ namespace BCIT
         {
             if (prevHoveredGameObject != null) prevHoveredGameObject = null;
             
+            if (curSelectGameObject != null && curSelectGameObject == go) return;
+            
             if (curSelectGameObject != null)
             {
                 curSelectGameObject.GetComponent<Renderer>().material.color = Color.white;
@@ -55,6 +69,14 @@ namespace BCIT
             {
                 curSelectGameObject = go;
                 go.GetComponent<Renderer>().material.color = Color.red;
+            }
+        }
+
+        public void OnSelect(string name)
+        {
+            if(nodeMap.TryGetValue(name, out var child))
+            {
+                OnSelect(child.gameObject);
             }
         }
     }
