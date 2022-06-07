@@ -12,5 +12,10 @@ namespace BCIT
         {
             controller.SetView(view);
         }
+
+        private void Start()
+        {
+            UIManager.Instance.SetView(view);
+        }
     }
 }
