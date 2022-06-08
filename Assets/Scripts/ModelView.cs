@@ -1,10 +1,15 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 namespace BCIT
 {
+    public enum ViewState
+    {
+        Normal,
+        XRay,
+        Transparent
+    }
+
     public class ModelView : MonoBehaviour
     {
         [SerializeField] private Material normalMat;
@@ -14,7 +19,8 @@ namespace BCIT
         private GameObject prevHoveredGameObject;
         
         private Dictionary<string, Transform> nodeMap = new Dictionary<string, Transform>();
-
+        private ViewState state = ViewState.Normal;
+        
         void Awake()
         {
             var root = GetRootTransform();
@@ -54,13 +60,25 @@ namespace BCIT
 
         public void OnSelect(GameObject go)
         {
-            if (prevHoveredGameObject != null) prevHoveredGameObject = null;
+            prevHoveredGameObject = null;
             
             if (curSelectGameObject != null && curSelectGameObject == go) return;
             
             if (curSelectGameObject != null)
             {
-                curSelectGameObject.GetComponent<Renderer>().material.color = Color.white;
+                switch (state)
+                {
+                    case ViewState.Normal:
+                        curSelectGameObject.GetComponent<Renderer>().material = normalMat;
+                        curSelectGameObject.GetComponent<Renderer>().material.color = Color.white;
+                        break;
+                    case ViewState.XRay:
+                        curSelectGameObject.GetComponent<Renderer>().material = xRayMat;
+                        break;
+                    case ViewState.Transparent:
+                        curSelectGameObject.GetComponent<Renderer>().material = transparentMat;
+                        break;
+                }
                 if (curSelectGameObject == go)
                 {
                     curSelectGameObject = null;
@@ -80,30 +98,40 @@ namespace BCIT
         {
             if(nodeMap.TryGetValue(name, out var child))
             {
-                OnSelect(child.gameObject);
-            }
-        }
-
-        public void ChangeToXRay()
-        {
-            foreach (var kv in nodeMap)
-            {
-                var renderer = kv.Value.GetComponent<Renderer>();
-                if (renderer != null)
+                if (child.gameObject.GetComponent<Renderer>() != null)
                 {
-                    renderer.material = xRayMat;
+                    OnSelect(child.gameObject);
                 }
             }
         }
-        
-        public void ChangeToTransparent()
+
+        public void ChangeState(ViewState state)
+        {
+            this.state = state;
+            switch (state)
+            {
+                case ViewState.Normal:
+                    SwitchMaterial(normalMat);
+                    break;
+                case ViewState.XRay:
+                    SwitchMaterial(xRayMat);
+                    break;
+                case ViewState.Transparent:
+                    SwitchMaterial(transparentMat);
+                    break;
+            }
+        }
+
+        private void SwitchMaterial(Material mat)
         {
             foreach (var kv in nodeMap)
             {
+                if (curSelectGameObject != null && kv.Value == curSelectGameObject.transform) continue;
+
                 var renderer = kv.Value.GetComponent<Renderer>();
                 if (renderer != null)
                 {
-                    renderer.material = transparentMat;
+                    renderer.material = mat;
                 }
             }
         }
