@@ -5,13 +5,14 @@ namespace BCIT
 {
     public class ModelController : MonoBehaviour, IEventListener
     {
-        private readonly float rotateSpeeed = 5f;
-        private readonly float moveSpeeed = 1f;
-        private readonly float moveSingleSpeeed = 0.5f;
+        private readonly float rotateSpeeed = 3f;
+        private readonly float moveSpeeed = 0.5f;
+        private readonly float moveSingleSpeeed = 0.3f;
 
         private Camera mainCam;
         private ModelView modelView;
         private GameObject curHoverGameObject;
+        private bool canHover = true;
         
         // Start is called before the first frame update
         void OnEnable()
@@ -23,15 +24,16 @@ namespace BCIT
         {
             Release();
         }
+
+        private bool IsMouseOverUI => EventSystem.current.IsPointerOverGameObject();
         
         // Update is called once per frame
         void Update()
         {
-            if (EventSystem.current.IsPointerOverGameObject())
-            {
-                return;
-            }
+            if (!canHover) return;
 
+            if (IsMouseOverUI) return;
+            
             if (mainCam != null && modelView != null)
             {
                 var ray = mainCam.ScreenPointToRay(Input.mousePosition);
@@ -59,21 +61,40 @@ namespace BCIT
         
         private void Move(float x, float y)
         {
+            canHover = false;
             modelView.GetRootTransform().Translate(new Vector3(x, y, 0) * moveSpeeed, Space.World);
+        }
+        
+        private void MoveEnd(float x, float y)
+        {
+            canHover = true;
         }
         
         private void Rotate(float x, float y)
         {
-            modelView.GetRootTransform().Rotate(new Vector3(y, x, 0f) * rotateSpeeed);
+            canHover = false;
+            modelView.GetRootTransform().Rotate(new Vector3(0f, x, 0f) * rotateSpeeed);
+        }
+        
+        private void RotateEnd(float x, float y)
+        {
+            canHover = true;
         }
 
         private void MoveSinglePart(float x, float y)
         {
+            if (IsMouseOverUI) return;
+            canHover = false;
             var t = modelView.GetSelectedTransform();
             if (t != null)
             {
                 t.Translate(new Vector3(x, y, 0) * moveSingleSpeeed, Space.World);
             }
+        }
+        
+        private void MoveSinglePartEnd(float x, float y)
+        {
+            canHover = true;
         }
 
         private void Initialize()
@@ -97,6 +118,9 @@ namespace BCIT
             InputManager.Instance.OnRightButton += Rotate;
             InputManager.Instance.OnMiddleButton += Move;
             InputManager.Instance.OnLeftButton += MoveSinglePart;
+            InputManager.Instance.OnRightButtonUp += RotateEnd;
+            InputManager.Instance.OnMiddleButtonUp += MoveEnd;
+            InputManager.Instance.OnLeftButtonUp += MoveSinglePartEnd;
             InputManager.Instance.OnLeftButtonClick += Select;
         }
 
@@ -108,6 +132,9 @@ namespace BCIT
                 InputManager.Instance.OnRightButton -= Rotate;
                 InputManager.Instance.OnMiddleButton -= Move;
                 InputManager.Instance.OnLeftButton -= MoveSinglePart;
+                InputManager.Instance.OnRightButtonUp -= RotateEnd;
+                InputManager.Instance.OnMiddleButtonUp -= MoveEnd;
+                InputManager.Instance.OnLeftButtonUp -= MoveSinglePartEnd;
                 InputManager.Instance.OnLeftButtonClick -= Select;
             }
         }
