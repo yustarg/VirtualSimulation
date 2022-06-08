@@ -7,7 +7,7 @@ namespace BCIT
     {
         private readonly float rotateSpeeed = 3f;
         private readonly float moveSpeeed = 0.5f;
-        private readonly float moveSingleSpeeed = 0.3f;
+        private readonly float moveSingleSpeeed = 0.1f;
 
         private Camera mainCam;
         private ModelView modelView;

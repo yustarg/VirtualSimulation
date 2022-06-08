@@ -117,7 +117,7 @@ namespace BCIT
             {
                 var pos = Utils.GetMeshCenter(go);
                 var canvasPos = canvas.WorldToCanvasPosition(pos);
-                panelTip.Show(go.name, new Vector3(canvasPos.x, canvasPos.y + panelTip.GetHeight() / 2, canvasPos.z));
+                panelTip.Show(go.name, canvasPos);
             }
             else
             {

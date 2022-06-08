@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -10,29 +11,23 @@ namespace BCIT
         [SerializeField] private Text tipText;
         [SerializeField] private RectTransform tipBgRect;
         private Vector3 offset;
-        
-        // Start is called before the first frame update
-        void Start()
+
+        private void Awake()
         {
             tipText.text = "";
-            offset = tipBgRect.sizeDelta / 2;
+            offset = new Vector3(tipBgRect.sizeDelta.x / 2, tipBgRect.sizeDelta.y, 0);
         }
 
         public void Show(string tip, Vector3 pos)
         {
+            gameObject.SetActive(true);
             tipText.text = tip;
             transform.position = pos + offset;
-            gameObject.SetActive(true);
         }
 
         public void Hide()
         {
             gameObject.SetActive(false);
-        }
-
-        public float GetHeight()
-        {
-            return tipBgRect.sizeDelta.y;
         }
     }
 }
