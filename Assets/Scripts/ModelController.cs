@@ -86,7 +86,7 @@ namespace BCIT
             if (IsMouseOverUI) return;
             canHover = false;
             var t = modelView.GetSelectedTransform();
-            if (t != null)
+            if (t != null && curHoverGameObject != null && curHoverGameObject == t.gameObject)
             {
                 t.Translate(new Vector3(x, y, 0) * moveSingleSpeeed, Space.World);
             }
@@ -118,6 +118,7 @@ namespace BCIT
             InputManager.Instance.OnRightButton += Rotate;
             InputManager.Instance.OnMiddleButton += Move;
             InputManager.Instance.OnLeftButton += MoveSinglePart;
+            InputManager.Instance.OnLeftButtonUp += MoveSinglePartEnd;
             InputManager.Instance.OnRightButtonUp += RotateEnd;
             InputManager.Instance.OnMiddleButtonUp += MoveEnd;
             InputManager.Instance.OnLeftButtonUp += MoveSinglePartEnd;
@@ -132,6 +133,7 @@ namespace BCIT
                 InputManager.Instance.OnRightButton -= Rotate;
                 InputManager.Instance.OnMiddleButton -= Move;
                 InputManager.Instance.OnLeftButton -= MoveSinglePart;
+                InputManager.Instance.OnLeftButtonUp -= MoveSinglePartEnd;
                 InputManager.Instance.OnRightButtonUp -= RotateEnd;
                 InputManager.Instance.OnMiddleButtonUp -= MoveEnd;
                 InputManager.Instance.OnLeftButtonUp -= MoveSinglePartEnd;
