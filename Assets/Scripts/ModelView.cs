@@ -7,9 +7,12 @@ namespace BCIT
 {
     public class ModelView : MonoBehaviour
     {
+        [SerializeField] private Material normalMat;
+        [SerializeField] private Material xRayMat;
+        [SerializeField] private Material transparentMat;
         private GameObject curSelectGameObject;
         private GameObject prevHoveredGameObject;
-        private Material prevHoveredMat;
+        
         private Dictionary<string, Transform> nodeMap = new Dictionary<string, Transform>();
 
         void Awake()
@@ -68,6 +71,7 @@ namespace BCIT
             if (go != null)
             {
                 curSelectGameObject = go;
+                go.GetComponent<Renderer>().material = normalMat;
                 go.GetComponent<Renderer>().material.color = Color.red;
             }
         }
@@ -77,6 +81,30 @@ namespace BCIT
             if(nodeMap.TryGetValue(name, out var child))
             {
                 OnSelect(child.gameObject);
+            }
+        }
+
+        public void ChangeToXRay()
+        {
+            foreach (var kv in nodeMap)
+            {
+                var renderer = kv.Value.GetComponent<Renderer>();
+                if (renderer != null)
+                {
+                    renderer.material = xRayMat;
+                }
+            }
+        }
+        
+        public void ChangeToTransparent()
+        {
+            foreach (var kv in nodeMap)
+            {
+                var renderer = kv.Value.GetComponent<Renderer>();
+                if (renderer != null)
+                {
+                    renderer.material = transparentMat;
+                }
             }
         }
     }

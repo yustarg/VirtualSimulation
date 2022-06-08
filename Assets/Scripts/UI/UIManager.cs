@@ -148,12 +148,12 @@ namespace BCIT
 
         private void OnBtnXRayClick()
         {
-            //TODO XRay mode
+            modelView.ChangeToXRay();
         }
 
         private void OnBtnTransparentClick()
         {
-            //TODO Transparent mode
+            modelView.ChangeToTransparent();
         }
     
         private void ShowTreeView(bool isShow)
