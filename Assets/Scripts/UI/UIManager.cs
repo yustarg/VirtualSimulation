@@ -115,9 +115,9 @@ namespace BCIT
         {
             if (go != null)
             {
-                //TODO refactor here
-                var pos = go.transform.TransformPoint(go.GetComponent<MeshFilter>().mesh.bounds.max);
-                panelTip.Show(go.name, canvas.WorldToCanvasPosition(new Vector3(pos.x, pos.y / 2, pos.z)));
+                var pos = Utils.GetMeshCenter(go);
+                var canvasPos = canvas.WorldToCanvasPosition(pos);
+                panelTip.Show(go.name, new Vector3(canvasPos.x, canvasPos.y + panelTip.GetHeight() / 2, canvasPos.z));
             }
             else
             {

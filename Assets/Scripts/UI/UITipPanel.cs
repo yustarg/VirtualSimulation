@@ -29,5 +29,10 @@ namespace BCIT
         {
             gameObject.SetActive(false);
         }
+
+        public float GetHeight()
+        {
+            return tipBgRect.sizeDelta.y;
+        }
     }
 }
